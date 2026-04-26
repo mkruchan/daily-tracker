@@ -105,10 +105,10 @@
     background: var(--surface);
     border: 0.5px solid var(--border2);
     border-radius: 12px;
-    padding: 14px;
+    padding: 20px;
     margin-top: 8px;
     width: 100%;
-    max-width: 300px;
+    max-width: 100%;
   }
 
   .cal-dropdown.open { display: block; }
@@ -116,16 +116,16 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
   }
 
   .cal-nav {
     background: none;
     border: none;
     color: var(--muted);
-    font-size: 18px;
+    font-size: 24px;
     cursor: pointer;
-    padding: 2px 6px;
+    padding: 4px 10px;
     border-radius: 4px;
     transition: color 0.15s, background 0.15s;
   }
@@ -134,7 +134,7 @@
 
   .cal-month-label {
     font-family: 'DM Mono', monospace;
-    font-size: 12px;
+    font-size: 14px;
     color: var(--text);
     letter-spacing: 0.05em;
   }
@@ -142,21 +142,21 @@
   .cal-weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
 
   .cal-weekdays span {
     font-family: 'DM Mono', monospace;
-    font-size: 10px;
+    font-size: 11px;
     color: var(--muted);
     text-align: center;
-    padding: 3px 0;
+    padding: 4px 0;
   }
 
   .cal-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 2px;
+    gap: 4px;
   }
 
   .cal-day {
@@ -165,9 +165,9 @@
     align-items: center;
     justify-content: center;
     font-family: 'DM Mono', monospace;
-    font-size: 12px;
+    font-size: 14px;
     color: var(--text);
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     transition: background 0.15s, color 0.15s;
     border: 0.5px solid transparent;
