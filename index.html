@@ -19,9 +19,9 @@
     --red: #f56464;
     --amber: #f5a64a;
   }
- 
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
- 
+
   body {
     background: var(--bg);
     color: var(--text);
@@ -33,7 +33,7 @@
     padding: 3rem 1rem 6rem;
     overflow-x: hidden;
   }
- 
+
   body::before {
     content: '';
     position: fixed;
@@ -46,27 +46,27 @@
     pointer-events: none;
     z-index: 0;
   }
- 
+
   .container {
     width: 100%;
     max-width: 560px;
     position: relative;
     z-index: 1;
   }
- 
+
   .header {
     margin-bottom: 3rem;
     opacity: 0;
     transform: translateY(16px);
     animation: fadeUp 0.6s ease forwards;
   }
- 
+
   .cal-wrap {
     position: relative;
     margin-top: 14px;
     display: inline-block;
   }
- 
+
   .cal-display {
     display: flex;
     align-items: center;
@@ -79,57 +79,46 @@
     transition: border-color 0.2s;
     user-select: none;
   }
- 
+
   .cal-display:hover { border-color: var(--border2); }
- 
+
   .cal-icon { font-size: 14px; }
- 
+
   .cal-date-text {
     font-family: 'DM Mono', monospace;
     font-size: 13px;
     color: var(--text);
   }
- 
+
   .cal-arrow {
     font-size: 10px;
     color: var(--muted);
     margin-left: 2px;
   }
- 
+
   .cal-overlay {
     display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 999;
   }
- 
-  .cal-overlay.open { display: block; }
- 
+
   .cal-dropdown {
     display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: var(--surface2);
+    background: var(--surface);
     border: 0.5px solid var(--border2);
-    border-radius: 14px;
-    padding: 16px;
-    z-index: 1000;
-    width: 280px;
-    box-shadow: 0 16px 48px rgba(0,0,0,0.8);
+    border-radius: 12px;
+    padding: 14px;
+    margin-top: 8px;
+    width: 100%;
+    max-width: 300px;
   }
- 
+
   .cal-dropdown.open { display: block; }
- 
   .cal-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 12px;
   }
- 
+
   .cal-nav {
     background: none;
     border: none;
@@ -140,22 +129,22 @@
     border-radius: 4px;
     transition: color 0.15s, background 0.15s;
   }
- 
+
   .cal-nav:hover { color: var(--text); background: var(--surface2); }
- 
+
   .cal-month-label {
     font-family: 'DM Mono', monospace;
     font-size: 12px;
     color: var(--text);
     letter-spacing: 0.05em;
   }
- 
+
   .cal-weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     margin-bottom: 6px;
   }
- 
+
   .cal-weekdays span {
     font-family: 'DM Mono', monospace;
     font-size: 10px;
@@ -163,13 +152,13 @@
     text-align: center;
     padding: 3px 0;
   }
- 
+
   .cal-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 2px;
   }
- 
+
   .cal-day {
     aspect-ratio: 1;
     display: flex;
@@ -183,34 +172,34 @@
     transition: background 0.15s, color 0.15s;
     border: 0.5px solid transparent;
   }
- 
+
   .cal-day:hover { background: var(--surface2); }
   .cal-day.today { border-color: var(--border2); color: var(--accent); }
   .cal-day.selected { background: var(--accent); color: #0c0c0f; font-weight: 500; }
   .cal-day.other-month { color: var(--muted); opacity: 0.4; }
   .cal-day.empty { cursor: default; }
- 
+
   h1 {
     font-size: 28px;
     font-weight: 300;
     color: var(--text);
     letter-spacing: -0.02em;
   }
- 
+
   h1 span {
     color: var(--accent);
   }
- 
+
   .section {
     margin-bottom: 2rem;
     opacity: 0;
     transform: translateY(16px);
   }
- 
+
   .section.visible {
     animation: fadeUp 0.5s ease forwards;
   }
- 
+
   .section-label {
     font-family: 'DM Mono', monospace;
     font-size: 10px;
@@ -220,7 +209,7 @@
     margin-bottom: 10px;
     padding-left: 2px;
   }
- 
+
   .metric {
     display: flex;
     align-items: center;
@@ -234,7 +223,7 @@
     position: relative;
     overflow: hidden;
   }
- 
+
   .metric::before {
     content: '';
     position: absolute;
@@ -246,24 +235,24 @@
     transition: width 0.3s ease;
     pointer-events: none;
   }
- 
+
   .metric:hover {
     border-color: var(--border2);
     background: var(--surface2);
   }
- 
+
   .metric-icon {
     font-size: 16px;
     width: 22px;
     text-align: center;
     flex-shrink: 0;
   }
- 
+
   .metric-info {
     flex: 1;
     min-width: 0;
   }
- 
+
   .metric-name {
     font-size: 13px;
     color: var(--text);
@@ -272,21 +261,21 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
- 
+
   .metric-hint {
     font-size: 11px;
     color: var(--muted);
     margin-top: 1px;
     font-family: 'DM Mono', monospace;
   }
- 
+
   .slider-col {
     display: flex;
     align-items: center;
     gap: 10px;
     flex-shrink: 0;
   }
- 
+
   input[type=range] {
     -webkit-appearance: none;
     width: 100px;
@@ -297,7 +286,7 @@
     cursor: pointer;
     position: relative;
   }
- 
+
   input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 14px;
@@ -308,21 +297,21 @@
     transition: transform 0.15s, box-shadow 0.15s;
     box-shadow: 0 0 0 0 rgba(200,245,100,0);
   }
- 
+
   input[type=range]::-webkit-slider-thumb:hover {
     transform: scale(1.2);
     box-shadow: 0 0 0 4px rgba(200,245,100,0.15);
   }
- 
+
   input[type=range].inverted::-webkit-slider-thumb {
     background: var(--red);
     box-shadow: 0 0 0 0 rgba(245,100,100,0);
   }
- 
+
   input[type=range].inverted::-webkit-slider-thumb:hover {
     box-shadow: 0 0 0 4px rgba(245,100,100,0.15);
   }
- 
+
   .slider-val {
     font-family: 'DM Mono', monospace;
     font-size: 14px;
@@ -332,11 +321,11 @@
     text-align: right;
     transition: color 0.2s;
   }
- 
+
   .slider-val.inverted {
     color: var(--red);
   }
- 
+
   .score-section {
     margin-top: 2.5rem;
     padding: 24px;
@@ -346,19 +335,19 @@
     opacity: 0;
     transform: translateY(16px);
   }
- 
+
   .score-section.visible {
     animation: fadeUp 0.5s ease forwards;
     animation-delay: 0.1s;
   }
- 
+
   .score-top {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
     margin-bottom: 16px;
   }
- 
+
   .score-number {
     font-family: 'DM Mono', monospace;
     font-size: 56px;
@@ -368,14 +357,14 @@
     transition: color 0.4s;
     letter-spacing: -0.04em;
   }
- 
+
   .score-denom {
     font-family: 'DM Mono', monospace;
     font-size: 18px;
     color: var(--muted);
     margin-bottom: 8px;
   }
- 
+
   .score-grade {
     font-size: 13px;
     font-weight: 500;
@@ -387,7 +376,7 @@
     transition: all 0.3s;
     white-space: nowrap;
   }
- 
+
   .bar-track {
     height: 3px;
     background: var(--surface2);
@@ -395,7 +384,7 @@
     overflow: hidden;
     margin-bottom: 20px;
   }
- 
+
   .bar-fill {
     height: 100%;
     background: var(--accent);
@@ -403,7 +392,7 @@
     transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
     width: 50%;
   }
- 
+
   .note-label {
     font-family: 'DM Mono', monospace;
     font-size: 10px;
@@ -412,7 +401,7 @@
     text-transform: uppercase;
     margin-bottom: 8px;
   }
- 
+
   textarea {
     width: 100%;
     background: var(--surface2);
@@ -427,16 +416,16 @@
     outline: none;
     transition: border-color 0.2s;
   }
- 
+
   textarea::placeholder { color: var(--muted); }
   textarea:focus { border-color: var(--border2); }
- 
+
   .btn-row {
     display: flex;
     gap: 8px;
     margin-top: 14px;
   }
- 
+
   .btn-save {
     flex: 1;
     padding: 11px;
@@ -451,10 +440,10 @@
     transition: opacity 0.2s, transform 0.15s;
     letter-spacing: 0.01em;
   }
- 
+
   .btn-save:hover { opacity: 0.88; }
   .btn-save:active { transform: scale(0.98); }
- 
+
   .btn-reset {
     padding: 11px 16px;
     background: transparent;
@@ -466,9 +455,9 @@
     cursor: pointer;
     transition: border-color 0.2s, color 0.2s;
   }
- 
+
   .btn-reset:hover { border-color: var(--border2); color: var(--text); }
- 
+
   .toast {
     position: fixed;
     bottom: 2rem;
@@ -486,23 +475,23 @@
     z-index: 100;
     white-space: nowrap;
   }
- 
+
   .toast.show {
     transform: translateX(-50%) translateY(0);
     opacity: 1;
   }
- 
+
   .history-section {
     margin-top: 2rem;
     opacity: 0;
     transform: translateY(16px);
   }
- 
+
   .history-section.visible {
     animation: fadeUp 0.5s ease forwards;
     animation-delay: 0.2s;
   }
- 
+
   .history-row {
     display: flex;
     align-items: center;
@@ -511,19 +500,19 @@
     border-bottom: 0.5px solid var(--border);
     font-size: 12px;
   }
- 
+
   .history-row:last-child { border-bottom: none; }
- 
+
   .history-date {
     font-family: 'DM Mono', monospace;
     color: var(--muted);
   }
- 
+
   .history-score {
     font-family: 'DM Mono', monospace;
     font-weight: 500;
   }
- 
+
   .history-note {
     color: var(--muted);
     font-size: 11px;
@@ -532,21 +521,22 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
- 
+
   .notion-panel {
     background: var(--surface);
     border: 0.5px solid var(--border);
     border-radius: 14px;
+    margin-top: 3rem;
     margin-bottom: 2rem;
     overflow: hidden;
     opacity: 0;
     transform: translateY(16px);
   }
- 
+
   .notion-panel.visible {
     animation: fadeUp 0.5s ease forwards;
   }
- 
+
   .notion-toggle {
     display: flex;
     align-items: center;
@@ -555,53 +545,53 @@
     cursor: pointer;
     user-select: none;
   }
- 
+
   .notion-toggle-left {
     display: flex;
     align-items: center;
     gap: 10px;
   }
- 
+
   .notion-toggle-label {
     font-size: 13px;
     color: var(--text);
   }
- 
+
   .notion-toggle-status {
     font-family: 'DM Mono', monospace;
     font-size: 11px;
     color: var(--muted);
   }
- 
+
   .notion-toggle-status.connected {
     color: var(--accent);
   }
- 
+
   .notion-toggle-arrow {
     font-size: 11px;
     color: var(--muted);
     transition: transform 0.2s;
   }
- 
+
   .notion-toggle-arrow.open {
     transform: rotate(180deg);
   }
- 
+
   .notion-body {
     display: none;
     padding: 0 16px 16px;
     border-top: 0.5px solid var(--border);
     padding-top: 14px;
   }
- 
+
   .notion-body.open {
     display: block;
   }
- 
+
   .notion-field {
     margin-bottom: 10px;
   }
- 
+
   .notion-field-label {
     font-family: 'DM Mono', monospace;
     font-size: 10px;
@@ -610,7 +600,7 @@
     text-transform: uppercase;
     margin-bottom: 6px;
   }
- 
+
   .notion-field input {
     width: 100%;
     background: var(--surface2);
@@ -623,16 +613,16 @@
     outline: none;
     transition: border-color 0.2s;
   }
- 
+
   .notion-field input::placeholder { color: var(--muted); }
   .notion-field input:focus { border-color: var(--border2); }
- 
+
   .notion-field-hint {
     font-size: 11px;
     color: var(--muted);
     margin-top: 4px;
   }
- 
+
   .notion-save-btn {
     width: 100%;
     padding: 9px;
@@ -646,15 +636,15 @@
     margin-top: 4px;
     transition: background 0.2s, border-color 0.2s;
   }
- 
+
   .notion-save-btn:hover { background: var(--surface2); }
- 
+
   .mood-row {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
   }
- 
+
   .mood-btn {
     padding: 6px 12px;
     background: var(--surface2);
@@ -665,19 +655,19 @@
     transition: border-color 0.15s, background 0.15s;
     user-select: none;
   }
- 
+
   .mood-btn:hover { border-color: var(--border2); }
   .mood-btn.selected { border-color: var(--accent); background: rgba(200,245,100,0.08); }
- 
+
   @keyframes fadeUp {
     to { opacity: 1; transform: translateY(0); }
   }
 </style>
 </head>
 <body>
- 
+
 <div class="container">
- 
+
   <div class="header">
     <h1>daily <span>score</span></h1>
     <div class="cal-wrap" id="cal-wrap">
@@ -686,7 +676,6 @@
         <span class="cal-date-text" id="cal-date-text">—</span>
         <span class="cal-arrow">▼</span>
       </div>
-      <div class="cal-overlay" id="cal-overlay" onclick="toggleCal()"></div>
       <div class="cal-dropdown" id="cal-dropdown">
         <div class="cal-header">
           <button class="cal-nav" onclick="changeMonth(-1)">‹</button>
@@ -700,10 +689,12 @@
       </div>
     </div>
   </div>
- 
+
+  <div class="cal-overlay" id="cal-overlay" onclick="toggleCal()"></div>
+
   <div class="section" id="s-body">
     <div class="section-label">Health</div>
- 
+
     <div class="metric">
       <span class="metric-icon">😴</span>
       <div class="metric-info">
@@ -715,7 +706,7 @@
         <span class="slider-val">5</span>
       </div>
     </div>
- 
+
     <div class="metric">
       <span class="metric-icon">🥗</span>
       <div class="metric-info">
@@ -727,7 +718,7 @@
         <span class="slider-val">5</span>
       </div>
     </div>
- 
+
     <div class="metric">
       <span class="metric-icon">🏃</span>
       <div class="metric-info">
@@ -740,10 +731,10 @@
       </div>
     </div>
   </div>
- 
+
   <div class="section" id="s-work">
     <div class="section-label">Work</div>
- 
+
     <div class="metric">
       <span class="metric-icon">🎯</span>
       <div class="metric-info">
@@ -755,7 +746,7 @@
         <span class="slider-val">5</span>
       </div>
     </div>
- 
+
     <div class="metric">
       <span class="metric-icon">📚</span>
       <div class="metric-info">
@@ -767,7 +758,7 @@
         <span class="slider-val">5</span>
       </div>
     </div>
- 
+
     <div class="metric">
       <span class="metric-icon">📵</span>
       <div class="metric-info">
@@ -780,10 +771,10 @@
       </div>
     </div>
   </div>
- 
+
   <div class="section" id="s-mind">
     <div class="section-label">Mind</div>
- 
+
     <div class="metric" style="flex-direction:column;align-items:flex-start;gap:10px">
       <div style="display:flex;align-items:center;gap:10px;width:100%">
         <span class="metric-icon">😊</span>
@@ -805,7 +796,29 @@
       </div>
     </div>
   </div>
- 
+
+  <div class="score-section" id="score-section">
+    <div class="score-top">
+      <div style="display:flex;align-items:flex-end;gap:6px">
+        <span class="score-number" id="score-num">5.0</span>
+        <span class="score-denom">/10</span>
+      </div>
+      <span class="score-grade" id="score-grade">Average</span>
+    </div>
+    <div class="bar-track"><div class="bar-fill" id="bar-fill"></div></div>
+    <div class="note-label">Note</div>
+    <textarea id="day-note" placeholder="One sentence about this day..."></textarea>
+    <div class="btn-row">
+      <button class="btn-save" onclick="saveEntry()">Save entry</button>
+      <button class="btn-reset" onclick="resetAll()">Reset</button>
+    </div>
+  </div>
+
+  <div class="history-section" id="history-section">
+    <div class="section-label" style="margin-bottom:0">Recent</div>
+    <div id="history-list"></div>
+  </div>
+
   <div class="notion-panel" id="notion-panel">
     <div class="notion-toggle" onclick="toggleNotion()">
       <div class="notion-toggle-left">
@@ -831,38 +844,16 @@
       <button class="notion-save-btn" onclick="testNotion()">Test connection</button>
     </div>
   </div>
- 
-  <div class="score-section" id="score-section">
-    <div class="score-top">
-      <div style="display:flex;align-items:flex-end;gap:6px">
-        <span class="score-number" id="score-num">5.0</span>
-        <span class="score-denom">/10</span>
-      </div>
-      <span class="score-grade" id="score-grade">Average</span>
-    </div>
-    <div class="bar-track"><div class="bar-fill" id="bar-fill"></div></div>
-    <div class="note-label">Note</div>
-    <textarea id="day-note" placeholder="One sentence about this day..."></textarea>
-    <div class="btn-row">
-      <button class="btn-save" onclick="saveEntry()">Save entry</button>
-      <button class="btn-reset" onclick="resetAll()">Reset</button>
-    </div>
-  </div>
- 
-  <div class="history-section" id="history-section">
-    <div class="section-label" style="margin-bottom:0">Recent</div>
-    <div id="history-list"></div>
-  </div>
- 
+
 </div>
- 
+
 <div class="toast" id="toast">Entry saved</div>
- 
+
 <script>
   const METRICS = ['sleep','nutrition','activity','focus','learning','procrastination'];
   const WEIGHTS = {sleep:1,nutrition:1,activity:1,focus:1.5,learning:1,procrastination:-1};
   let selectedMood = '';
- 
+
   function selectMood(el){
     document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));
     el.classList.add('selected');
@@ -872,34 +863,33 @@
     ms.textContent = icon;
     ms.style.opacity = '1';
   }
- 
+
   let selectedDate = new Date().toLocaleDateString('en-CA');
   let calMonth = new Date();
- 
+
   function today(){
     return selectedDate;
   }
- 
+
   function formatDate(str){
     const d = new Date(str+'T12:00:00');
     return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
   }
- 
+
   function updateCalDisplay(){
     document.getElementById('cal-date-text').textContent = formatDate(selectedDate);
   }
- 
+
   function toggleCal(){
     document.getElementById('cal-dropdown').classList.toggle('open');
-    document.getElementById('cal-overlay').classList.toggle('open');
     renderCal();
   }
- 
+
   function changeMonth(dir){
     calMonth.setMonth(calMonth.getMonth()+dir);
     renderCal();
   }
- 
+
   function renderCal(){
     const y=calMonth.getFullYear(), m=calMonth.getMonth();
     document.getElementById('cal-month-label').textContent =
@@ -925,24 +915,21 @@
         selectedDate=dateStr;
         updateCalDisplay();
         document.getElementById('cal-dropdown').classList.remove('open');
-        document.getElementById('cal-overlay').classList.remove('open');
         renderCal();
       };
       grid.appendChild(el);
     }
   }
- 
+
   document.addEventListener('click', e=>{
     const wrap=document.getElementById('cal-wrap');
-    const dropdown=document.getElementById('cal-dropdown');
-    if(!wrap.contains(e.target) && !dropdown.contains(e.target)){
+    if(!wrap.contains(e.target)){
       document.getElementById('cal-dropdown').classList.remove('open');
-      document.getElementById('cal-overlay').classList.remove('open');
     }
   });
- 
+
   updateCalDisplay();
- 
+
   function getVals(){
     const v={};
     METRICS.forEach(k=>{
@@ -950,7 +937,7 @@
     });
     return v;
   }
- 
+
   function calcScore(v){
     let tw=0,ts=0;
     METRICS.forEach(k=>{
@@ -961,7 +948,7 @@
     });
     return Math.round((ts/tw)*10)/10;
   }
- 
+
   function getGrade(s){
     if(s>=8.5) return {label:'Excellent',color:'#c8f564',bg:'rgba(200,245,100,0.08)',border:'rgba(200,245,100,0.2)'};
     if(s>=7)   return {label:'Good',color:'#c8f564',bg:'rgba(200,245,100,0.06)',border:'rgba(200,245,100,0.15)'};
@@ -969,7 +956,7 @@
     if(s>=3)   return {label:'Weak',color:'#f5a64a',bg:'rgba(245,166,74,0.06)',border:'rgba(245,166,74,0.15)'};
     return {label:'Rough day',color:'#f56464',bg:'rgba(245,100,100,0.08)',border:'rgba(245,100,100,0.2)'};
   }
- 
+
   function updateScore(){
     const v=getVals();
     const s=calcScore(v);
@@ -983,7 +970,7 @@
     grade.style.borderColor=g.border;
     document.getElementById('bar-fill').style.width=((s/10)*100)+'%';
     document.getElementById('bar-fill').style.background=g.color;
- 
+
     document.querySelectorAll('.metric').forEach(m=>{
       const range=m.querySelector('input[type=range]');
       if(!range) return;
@@ -992,17 +979,17 @@
       m.style.setProperty('--fill-pct',(pct*100)+'%');
     });
   }
- 
+
   function onSlide(el){
     const val=el.nextElementSibling;
     val.textContent=el.value;
     updateScore();
- 
+
     const metric=el.closest('.metric');
     const pct=(parseInt(el.value)-1)/9*100;
     metric.style.background=`linear-gradient(to right, rgba(200,245,100,0.03) ${pct}%, var(--surface) ${pct}%)`;
   }
- 
+
   function saveEntry(){
     const v=getVals();
     const s=calcScore(v);
@@ -1012,7 +999,7 @@
     const idx=history.findIndex(e=>e.date===today());
     if(idx>=0) history[idx]=entry; else history.unshift(entry);
     localStorage.setItem('daily_tracker',JSON.stringify(history.slice(0,30)));
- 
+
     const token=localStorage.getItem('n_token')||'';
     const dbid=localStorage.getItem('n_dbid')||'';
     if(token && dbid){
@@ -1022,7 +1009,7 @@
     }
     renderHistory();
   }
- 
+
   async function saveToNotion(token, dbid, entry, s){
     showToast('Saving to Notion...');
     const props = {
@@ -1060,14 +1047,14 @@
       showToast('Saved locally (Notion offline)');
     }
   }
- 
+
   function toggleNotion(){
     const body=document.getElementById('notion-body');
     const arrow=document.getElementById('notion-arrow');
     body.classList.toggle('open');
     arrow.classList.toggle('open');
   }
- 
+
   function saveNotionCreds(){
     const t=document.getElementById('n-token').value.trim();
     const d=document.getElementById('n-dbid').value.trim();
@@ -1075,7 +1062,7 @@
     if(d) localStorage.setItem('n_dbid',d);
     updateNotionStatus();
   }
- 
+
   function updateNotionStatus(){
     const t=localStorage.getItem('n_token')||'';
     const d=localStorage.getItem('n_dbid')||'';
@@ -1083,7 +1070,7 @@
     if(t && d){ st.textContent='connected'; st.classList.add('connected'); }
     else { st.textContent='not connected'; st.classList.remove('connected'); }
   }
- 
+
   async function testNotion(){
     const token=document.getElementById('n-token').value.trim()||localStorage.getItem('n_token')||'';
     const dbid=document.getElementById('n-dbid').value.trim()||localStorage.getItem('n_dbid')||'';
@@ -1104,7 +1091,7 @@
       }
     } catch(e){ showToast('Network error'); }
   }
- 
+
   function resetAll(){
     METRICS.forEach(k=>{
       const el=document.querySelector('[data-key='+k+']');
@@ -1115,14 +1102,14 @@
     document.getElementById('day-note').value='';
     updateScore();
   }
- 
+
   function showToast(msg){
     const t=document.getElementById('toast');
     t.textContent=msg;
     t.classList.add('show');
     setTimeout(()=>t.classList.remove('show'),2200);
   }
- 
+
   function renderHistory(){
     const history=JSON.parse(localStorage.getItem('daily_tracker')||'[]');
     const sec=document.getElementById('history-section');
@@ -1139,7 +1126,7 @@
     }).join('');
     sec.classList.add('visible');
   }
- 
+
   function animateSections(){
     const sections=['s-body','s-work','s-mind','notion-panel','score-section','history-section'];
     sections.forEach((id,i)=>{
@@ -1149,7 +1136,7 @@
       },100+i*80);
     });
   }
- 
+
   // Load saved Notion creds
   function loadNotionCreds(){
     const t=localStorage.getItem('n_token')||'';
@@ -1158,7 +1145,7 @@
     if(d) document.getElementById('n-dbid').value=d;
     updateNotionStatus();
   }
- 
+
   updateScore();
   renderHistory();
   animateSections();
@@ -1166,4 +1153,3 @@
 </script>
 </body>
 </html>
- 
