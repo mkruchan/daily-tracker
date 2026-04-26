@@ -413,6 +413,142 @@
     white-space: nowrap;
   }
 
+  .notion-panel {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  .notion-panel.visible {
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  .notion-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .notion-toggle-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .notion-toggle-label {
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .notion-toggle-status {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .notion-toggle-status.connected {
+    color: var(--accent);
+  }
+
+  .notion-toggle-arrow {
+    font-size: 11px;
+    color: var(--muted);
+    transition: transform 0.2s;
+  }
+
+  .notion-toggle-arrow.open {
+    transform: rotate(180deg);
+  }
+
+  .notion-body {
+    display: none;
+    padding: 0 16px 16px;
+    border-top: 0.5px solid var(--border);
+    padding-top: 14px;
+  }
+
+  .notion-body.open {
+    display: block;
+  }
+
+  .notion-field {
+    margin-bottom: 10px;
+  }
+
+  .notion-field-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .notion-field input {
+    width: 100%;
+    background: var(--surface2);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 8px 12px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .notion-field input::placeholder { color: var(--muted); }
+  .notion-field input:focus { border-color: var(--border2); }
+
+  .notion-field-hint {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .notion-save-btn {
+    width: 100%;
+    padding: 9px;
+    background: transparent;
+    border: 0.5px solid var(--border2);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 4px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .notion-save-btn:hover { background: var(--surface2); }
+
+  .mood-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .mood-btn {
+    padding: 6px 12px;
+    background: var(--surface2);
+    border: 0.5px solid var(--border);
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: border-color 0.15s, background 0.15s;
+    user-select: none;
+  }
+
+  .mood-btn:hover { border-color: var(--border2); }
+  .mood-btn.selected { border-color: var(--accent); background: rgba(200,245,100,0.08); }
+
   @keyframes fadeUp {
     to { opacity: 1; transform: translateY(0); }
   }
@@ -510,16 +646,51 @@
   <div class="section" id="s-mind">
     <div class="section-label">Mind</div>
 
-    <div class="metric">
-      <span class="metric-icon">😊</span>
-      <div class="metric-info">
-        <div class="metric-name">Mood</div>
-        <div class="metric-hint">overall emotional state</div>
+    <div class="metric" style="flex-direction:column;align-items:flex-start;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px;width:100%">
+        <span class="metric-icon">😊</span>
+        <div class="metric-info">
+          <div class="metric-name">Mood</div>
+          <div class="metric-hint">how are you feeling?</div>
+        </div>
+        <span id="mood-selected" style="font-size:20px;opacity:0.4">—</span>
       </div>
-      <div class="slider-col">
-        <input type="range" min="1" max="10" value="5" step="1" data-key="mood" oninput="onSlide(this)">
-        <span class="slider-val">5</span>
+      <div class="mood-row">
+        <span class="mood-btn" data-mood="😄 Great" onclick="selectMood(this)">😄</span>
+        <span class="mood-btn" data-mood="😊 Good" onclick="selectMood(this)">😊</span>
+        <span class="mood-btn" data-mood="😐 Meh" onclick="selectMood(this)">😐</span>
+        <span class="mood-btn" data-mood="😔 Low" onclick="selectMood(this)">😔</span>
+        <span class="mood-btn" data-mood="😞 Bad" onclick="selectMood(this)">😞</span>
+        <span class="mood-btn" data-mood="😤 Frustrated" onclick="selectMood(this)">😤</span>
+        <span class="mood-btn" data-mood="😴 Tired" onclick="selectMood(this)">😴</span>
+        <span class="mood-btn" data-mood="🔥 Energized" onclick="selectMood(this)">🔥</span>
       </div>
+    </div>
+  </div>
+
+  <div class="notion-panel" id="notion-panel">
+    <div class="notion-toggle" onclick="toggleNotion()">
+      <div class="notion-toggle-left">
+        <span style="font-size:16px">🔗</span>
+        <span class="notion-toggle-label">Notion connection</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="notion-toggle-status" id="notion-status">not connected</span>
+        <span class="notion-toggle-arrow" id="notion-arrow">▼</span>
+      </div>
+    </div>
+    <div class="notion-body" id="notion-body">
+      <div class="notion-field">
+        <div class="notion-field-label">Integration token</div>
+        <input type="password" id="n-token" placeholder="secret_..." oninput="saveNotionCreds()" />
+        <div class="notion-field-hint">Get it at notion.so/my-integrations</div>
+      </div>
+      <div class="notion-field">
+        <div class="notion-field-label">Database ID</div>
+        <input type="text" id="n-dbid" placeholder="32-char ID from Notion URL" oninput="saveNotionCreds()" />
+        <div class="notion-field-hint">notion.so/workspace/<b>THIS_PART</b>?v=...</div>
+      </div>
+      <button class="notion-save-btn" onclick="testNotion()">Test connection</button>
     </div>
   </div>
 
@@ -550,8 +721,19 @@
 <div class="toast" id="toast">Entry saved</div>
 
 <script>
-  const METRICS = ['sleep','nutrition','activity','focus','learning','procrastination','mood'];
-  const WEIGHTS = {sleep:1,nutrition:1,activity:1,focus:1.5,learning:1,procrastination:-1,mood:1};
+  const METRICS = ['sleep','nutrition','activity','focus','learning','procrastination'];
+  const WEIGHTS = {sleep:1,nutrition:1,activity:1,focus:1.5,learning:1,procrastination:-1};
+  let selectedMood = '';
+
+  function selectMood(el){
+    document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedMood = el.dataset.mood;
+    const icon = selectedMood.split(' ')[0];
+    const ms = document.getElementById('mood-selected');
+    ms.textContent = icon;
+    ms.style.opacity = '1';
+  }
 
   function today(){
     return new Date().toLocaleDateString('en-CA');
@@ -628,13 +810,102 @@
     const v=getVals();
     const s=calcScore(v);
     const note=document.getElementById('day-note').value.trim();
-    const entry={date:today(),score:s,metrics:v,note};
+    const entry={date:today(),score:s,metrics:v,mood:selectedMood,note};
     const history=JSON.parse(localStorage.getItem('daily_tracker')||'[]');
     const idx=history.findIndex(e=>e.date===today());
     if(idx>=0) history[idx]=entry; else history.unshift(entry);
     localStorage.setItem('daily_tracker',JSON.stringify(history.slice(0,30)));
-    showToast('Saved — '+s.toFixed(1)+'/10');
+
+    const token=localStorage.getItem('n_token')||'';
+    const dbid=localStorage.getItem('n_dbid')||'';
+    if(token && dbid){
+      saveToNotion(token, dbid, entry, s);
+    } else {
+      showToast('Saved locally — '+s.toFixed(1)+'/10');
+    }
     renderHistory();
+  }
+
+  async function saveToNotion(token, dbid, entry, s){
+    showToast('Saving to Notion...');
+    const props = {
+      "Name":{"title":[{"text":{"content":entry.date}}]},
+      "Date":{"date":{"start":entry.date}},
+      "Score":{"number":s},
+      "Sleep":{"number":entry.metrics.sleep},
+      "Nutrition":{"number":entry.metrics.nutrition},
+      "Activity":{"number":entry.metrics.activity},
+      "Focus":{"number":entry.metrics.focus},
+      "Learning":{"number":entry.metrics.learning},
+      "Procrastination":{"number":entry.metrics.procrastination},
+      "Mood":{"rich_text":[{"text":{"content":entry.mood||''}}]},
+      "Note":{"rich_text":[{"text":{"content":entry.note||''}}]}
+    };
+    try {
+      const res = await fetch('https://api.notion.com/v1/pages',{
+        method:'POST',
+        headers:{
+          'Authorization':'Bearer '+token,
+          'Notion-Version':'2022-06-28',
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify({parent:{database_id:dbid},properties:props})
+      });
+      if(res.ok){
+        showToast('✓ Saved to Notion — '+s.toFixed(1)+'/10');
+        document.getElementById('notion-status').textContent='connected';
+        document.getElementById('notion-status').classList.add('connected');
+      } else {
+        const err=await res.json();
+        showToast('Notion error: '+(err.message||'check token & DB ID'));
+      }
+    } catch(e){
+      showToast('Saved locally (Notion offline)');
+    }
+  }
+
+  function toggleNotion(){
+    const body=document.getElementById('notion-body');
+    const arrow=document.getElementById('notion-arrow');
+    body.classList.toggle('open');
+    arrow.classList.toggle('open');
+  }
+
+  function saveNotionCreds(){
+    const t=document.getElementById('n-token').value.trim();
+    const d=document.getElementById('n-dbid').value.trim();
+    if(t) localStorage.setItem('n_token',t);
+    if(d) localStorage.setItem('n_dbid',d);
+    updateNotionStatus();
+  }
+
+  function updateNotionStatus(){
+    const t=localStorage.getItem('n_token')||'';
+    const d=localStorage.getItem('n_dbid')||'';
+    const st=document.getElementById('notion-status');
+    if(t && d){ st.textContent='connected'; st.classList.add('connected'); }
+    else { st.textContent='not connected'; st.classList.remove('connected'); }
+  }
+
+  async function testNotion(){
+    const token=document.getElementById('n-token').value.trim()||localStorage.getItem('n_token')||'';
+    const dbid=document.getElementById('n-dbid').value.trim()||localStorage.getItem('n_dbid')||'';
+    if(!token||!dbid){ showToast('Enter token and DB ID first'); return; }
+    showToast('Testing...');
+    try {
+      const res=await fetch('https://api.notion.com/v1/databases/'+dbid.replace(/-/g,''),{
+        headers:{'Authorization':'Bearer '+token,'Notion-Version':'2022-06-28'}
+      });
+      if(res.ok){
+        showToast('✓ Connection works!');
+        document.getElementById('notion-status').textContent='connected';
+        document.getElementById('notion-status').classList.add('connected');
+        localStorage.setItem('n_token',token);
+        localStorage.setItem('n_dbid',dbid);
+      } else {
+        showToast('Failed — check token & DB ID');
+      }
+    } catch(e){ showToast('Network error'); }
   }
 
   function resetAll(){
@@ -673,7 +944,7 @@
   }
 
   function animateSections(){
-    const sections=['s-body','s-work','s-mind','score-section','history-section'];
+    const sections=['s-body','s-work','s-mind','notion-panel','score-section','history-section'];
     sections.forEach((id,i)=>{
       setTimeout(()=>{
         const el=document.getElementById(id);
@@ -682,9 +953,19 @@
     });
   }
 
+  // Load saved Notion creds
+  function loadNotionCreds(){
+    const t=localStorage.getItem('n_token')||'';
+    const d=localStorage.getItem('n_dbid')||'';
+    if(t) document.getElementById('n-token').value=t;
+    if(d) document.getElementById('n-dbid').value=d;
+    updateNotionStatus();
+  }
+
   updateScore();
   renderHistory();
   animateSections();
+  loadNotionCreds();
 </script>
 </body>
 </html>
