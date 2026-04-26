@@ -64,11 +64,12 @@
   .cal-wrap {
     position: relative;
     margin-top: 14px;
-    display: inline-block;
+    display: block;
+    width: 100%;
   }
 
   .cal-display {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
     padding: 7px 14px;
@@ -105,10 +106,9 @@
     background: var(--surface);
     border: 0.5px solid var(--border2);
     border-radius: 12px;
-    padding: 20px;
+    padding: 24px;
     margin-top: 8px;
     width: 100%;
-    max-width: 100%;
   }
 
   .cal-dropdown.open { display: block; }
@@ -116,41 +116,44 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
   }
 
   .cal-nav {
     background: none;
     border: none;
     color: var(--muted);
-    font-size: 24px;
+    font-size: 28px;
     cursor: pointer;
-    padding: 4px 10px;
-    border-radius: 4px;
+    padding: 4px 14px;
+    border-radius: 6px;
     transition: color 0.15s, background 0.15s;
+    line-height: 1;
   }
 
   .cal-nav:hover { color: var(--text); background: var(--surface2); }
 
   .cal-month-label {
     font-family: 'DM Mono', monospace;
-    font-size: 14px;
+    font-size: 16px;
     color: var(--text);
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
+    text-align: center;
+    flex: 1;
   }
 
   .cal-weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
 
   .cal-weekdays span {
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
+    font-size: 12px;
     color: var(--muted);
     text-align: center;
-    padding: 4px 0;
+    padding: 6px 0;
   }
 
   .cal-grid {
@@ -165,7 +168,7 @@
     align-items: center;
     justify-content: center;
     font-family: 'DM Mono', monospace;
-    font-size: 14px;
+    font-size: 15px;
     color: var(--text);
     border-radius: 8px;
     cursor: pointer;
@@ -492,35 +495,100 @@
     animation-delay: 0.2s;
   }
 
-  .history-row {
+  .history-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 14px;
-    border-bottom: 0.5px solid var(--border);
-    font-size: 12px;
+    margin-bottom: 10px;
   }
 
-  .history-row:last-child { border-bottom: none; }
+  .history-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .history-nav-btn {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    color: var(--muted);
+    font-size: 16px;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .history-nav-btn:hover { color: var(--text); border-color: var(--border2); }
+  .history-nav-btn:disabled { opacity: 0.3; cursor: default; }
+
+  .history-page-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .history-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 14px;
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 6px;
+    font-size: 12px;
+    transition: border-color 0.15s;
+  }
+
+  .history-row:hover { border-color: var(--border2); }
 
   .history-date {
     font-family: 'DM Mono', monospace;
     color: var(--muted);
+    flex-shrink: 0;
+    min-width: 90px;
   }
 
   .history-score {
     font-family: 'DM Mono', monospace;
     font-weight: 500;
+    flex-shrink: 0;
   }
 
   .history-note {
     color: var(--muted);
     font-size: 11px;
-    max-width: 180px;
+    flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+
+  .history-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .history-btn {
+    background: none;
+    border: 0.5px solid var(--border);
+    border-radius: 5px;
+    color: var(--muted);
+    font-size: 11px;
+    padding: 3px 8px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .history-btn:hover { color: var(--text); border-color: var(--border2); }
+  .history-btn.del:hover { color: var(--red); border-color: var(--red); }
 
   .notion-panel {
     background: var(--surface);
@@ -815,7 +883,14 @@
   </div>
 
   <div class="history-section" id="history-section">
-    <div class="section-label" style="margin-bottom:0">Recent</div>
+    <div class="history-header">
+      <div class="section-label" style="margin-bottom:0">Recent</div>
+      <div class="history-nav">
+        <button class="history-nav-btn" id="hist-prev" onclick="histPage(-1)">‹</button>
+        <span class="history-page-label" id="hist-page-label"></span>
+        <button class="history-nav-btn" id="hist-next" onclick="histPage(1)">›</button>
+      </div>
+    </div>
     <div id="history-list"></div>
   </div>
 
@@ -1110,18 +1185,81 @@
     setTimeout(()=>t.classList.remove('show'),2200);
   }
 
+  let histCurrentPage = 0;
+  const HIST_PER_PAGE = 5;
+
+  function histPage(dir){
+    const history=JSON.parse(localStorage.getItem('daily_tracker')||'[]');
+    const pages=Math.ceil(history.length/HIST_PER_PAGE);
+    histCurrentPage=Math.max(0,Math.min(pages-1,histCurrentPage+dir));
+    renderHistory();
+  }
+
+  function deleteEntry(date){
+    let history=JSON.parse(localStorage.getItem('daily_tracker')||'[]');
+    history=history.filter(e=>e.date!==date);
+    localStorage.setItem('daily_tracker',JSON.stringify(history));
+    histCurrentPage=Math.min(histCurrentPage,Math.max(0,Math.ceil(history.length/HIST_PER_PAGE)-1));
+    renderHistory();
+    showToast('Entry deleted');
+  }
+
+  function editEntry(date){
+    const history=JSON.parse(localStorage.getItem('daily_tracker')||'[]');
+    const entry=history.find(e=>e.date===date);
+    if(!entry) return;
+    // Set date
+    selectedDate=entry.date;
+    updateCalDisplay();
+    // Set sliders
+    METRICS.forEach(k=>{
+      if(entry.metrics && entry.metrics[k]!==undefined){
+        const el=document.querySelector('[data-key='+k+']');
+        el.value=entry.metrics[k];
+        el.nextElementSibling.textContent=entry.metrics[k];
+        const pct=(entry.metrics[k]-1)/9*100;
+        el.closest('.metric').style.background=`linear-gradient(to right, rgba(200,245,100,0.03) ${pct}%, var(--surface) ${pct}%)`;
+      }
+    });
+    // Set mood
+    if(entry.mood){
+      selectedMood=entry.mood;
+      document.querySelectorAll('.mood-btn').forEach(b=>{
+        b.classList.toggle('selected', b.dataset.mood===entry.mood);
+      });
+      const icon=entry.mood.split(' ')[0];
+      const ms=document.getElementById('mood-selected');
+      ms.textContent=icon; ms.style.opacity='1';
+    }
+    // Set note
+    document.getElementById('day-note').value=entry.note||'';
+    updateScore();
+    window.scrollTo({top:0,behavior:'smooth'});
+    showToast('Loaded — edit and save');
+  }
+
   function renderHistory(){
     const history=JSON.parse(localStorage.getItem('daily_tracker')||'[]');
     const sec=document.getElementById('history-section');
     const list=document.getElementById('history-list');
     if(!history.length){sec.style.display='none';return;}
     sec.style.display='block';
-    list.innerHTML=history.slice(0,7).map(e=>{
+    const pages=Math.ceil(history.length/HIST_PER_PAGE);
+    const start=histCurrentPage*HIST_PER_PAGE;
+    const page=history.slice(start,start+HIST_PER_PAGE);
+    document.getElementById('hist-page-label').textContent=(histCurrentPage+1)+'/'+pages;
+    document.getElementById('hist-prev').disabled=histCurrentPage===0;
+    document.getElementById('hist-next').disabled=histCurrentPage>=pages-1;
+    list.innerHTML=page.map(e=>{
       const g=getGrade(e.score);
       return `<div class="history-row">
         <span class="history-date">${formatDate(e.date)}</span>
         <span class="history-score" style="color:${g.color}">${e.score.toFixed(1)}</span>
         <span class="history-note">${e.note||'—'}</span>
+        <div class="history-actions">
+          <button class="history-btn" onclick="editEntry('${e.date}')">edit</button>
+          <button class="history-btn del" onclick="deleteEntry('${e.date}')">delete</button>
+        </div>
       </div>`;
     }).join('');
     sec.classList.add('visible');
