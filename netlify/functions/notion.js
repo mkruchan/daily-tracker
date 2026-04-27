@@ -4,18 +4,26 @@ exports.handler = async (event) => {
   }
 
   const NOTION_TOKEN = process.env.NOTION_TOKEN;
-  const NOTION_DB = process.env.NOTION_DB;
 
-  if (!NOTION_TOKEN || !NOTION_DB) {
+  if (!NOTION_TOKEN) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Missing NOTION_TOKEN or NOTION_DB env vars' })
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      body: JSON.stringify({ error: 'Missing NOTION_TOKEN env var' })
     };
   }
 
   try {
     const body = JSON.parse(event.body);
-    const { date, score, metrics, mood, note } = body;
+    const { dbid, date, score, metrics, mood, note } = body;
+
+    if (!dbid) {
+      return {
+        statusCode: 400,
+        headers: { 'Access-Control-Allow-Origin': '*' },
+        body: JSON.stringify({ error: 'Missing database ID' })
+      };
+    }
 
     const properties = {
       "Name": { "title": [{ "text": { "content": date } }] },
@@ -39,7 +47,7 @@ exports.handler = async (event) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        parent: { database_id: NOTION_DB },
+        parent: { database_id: dbid.replace(/-/g, '') },
         properties
       })
     });
