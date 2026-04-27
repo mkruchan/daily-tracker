@@ -907,11 +907,6 @@
     </div>
     <div class="notion-body" id="notion-body">
       <div class="notion-field">
-        <div class="notion-field-label">Integration token</div>
-        <input type="password" id="n-token" placeholder="secret_..." oninput="saveNotionCreds()" />
-        <div class="notion-field-hint">Get it at notion.so/my-integrations</div>
-      </div>
-      <div class="notion-field">
         <div class="notion-field-label">Database ID</div>
         <input type="text" id="n-dbid" placeholder="32-char ID from Notion URL" oninput="saveNotionCreds()" />
         <div class="notion-field-hint">notion.so/workspace/<b>THIS_PART</b>?v=...</div>
@@ -1074,42 +1069,29 @@
     const idx=history.findIndex(e=>e.date===today());
     if(idx>=0) history[idx]=entry; else history.unshift(entry);
     localStorage.setItem('daily_tracker',JSON.stringify(history.slice(0,30)));
-
-    const token=localStorage.getItem('n_token')||'';
     const dbid=localStorage.getItem('n_dbid')||'';
-    if(token && dbid){
-      saveToNotion(token, dbid, entry, s);
-    } else {
-      showToast('Saved locally — '+s.toFixed(1)+'/10');
-    }
+    if(dbid){ saveToNotion(dbid, entry, s); }
+    else { showToast('Saved locally — add DB ID below'); }
     renderHistory();
   }
 
-  async function saveToNotion(token, dbid, entry, s){
+  async function saveToNotion(dbid, entry, s){
     showToast('Saving to Notion...');
     try {
       const res = await fetch('/.netlify/functions/notion', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          date: entry.date,
-          score: s,
-          metrics: entry.metrics,
-          mood: entry.mood || '',
-          note: entry.note || ''
-        })
+        body: JSON.stringify({ dbid, date: entry.date, score: s, metrics: entry.metrics, mood: entry.mood||'', note: entry.note||'' })
       });
       const data = await res.json();
-      if (data.success) {
+      if(data.success){
         showToast('✓ Saved to Notion — ' + s.toFixed(1) + '/10');
-        document.getElementById('notion-status').textContent = 'connected';
+        document.getElementById('notion-status').textContent='connected';
         document.getElementById('notion-status').classList.add('connected');
       } else {
-        showToast('Notion error: ' + (data.error || 'check settings'));
+        showToast('Notion error: ' + (data.error||'check DB ID'));
       }
-    } catch(e) {
-      showToast('Saved locally (Notion offline)');
-    }
+    } catch(e){ showToast('Saved locally (Notion offline)'); }
   }
 
   function toggleNotion(){
@@ -1120,38 +1102,36 @@
   }
 
   function saveNotionCreds(){
-    const t=document.getElementById('n-token').value.trim();
     const d=document.getElementById('n-dbid').value.trim();
-    if(t) localStorage.setItem('n_token',t);
     if(d) localStorage.setItem('n_dbid',d);
     updateNotionStatus();
   }
 
   function updateNotionStatus(){
-    const t=localStorage.getItem('n_token')||'';
     const d=localStorage.getItem('n_dbid')||'';
     const st=document.getElementById('notion-status');
-    if(t && d){ st.textContent='connected'; st.classList.add('connected'); }
+    if(d){ st.textContent='connected'; st.classList.add('connected'); }
     else { st.textContent='not connected'; st.classList.remove('connected'); }
   }
 
   async function testNotion(){
-    const token=document.getElementById('n-token').value.trim()||localStorage.getItem('n_token')||'';
     const dbid=document.getElementById('n-dbid').value.trim()||localStorage.getItem('n_dbid')||'';
-    if(!token||!dbid){ showToast('Enter token and DB ID first'); return; }
+    if(!dbid){ showToast('Enter DB ID first'); return; }
     showToast('Testing...');
     try {
-      const res=await fetch('https://api.notion.com/v1/databases/'+dbid.replace(/-/g,''),{
-        headers:{'Authorization':'Bearer '+token,'Notion-Version':'2022-06-28'}
+      const res=await fetch('/.netlify/functions/notion',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({dbid, test:true, date:'test', score:0, metrics:{sleep:0,nutrition:0,activity:0,focus:0,learning:0,procrastination:0}, mood:'', note:'test'})
       });
-      if(res.ok){
+      const data=await res.json();
+      if(data.success){
         showToast('✓ Connection works!');
         document.getElementById('notion-status').textContent='connected';
         document.getElementById('notion-status').classList.add('connected');
-        localStorage.setItem('n_token',token);
         localStorage.setItem('n_dbid',dbid);
       } else {
-        showToast('Failed — check token & DB ID');
+        showToast('Failed: '+(data.error||'check DB ID'));
       }
     } catch(e){ showToast('Network error'); }
   }
@@ -1266,9 +1246,7 @@
 
   // Load saved Notion creds
   function loadNotionCreds(){
-    const t=localStorage.getItem('n_token')||'';
     const d=localStorage.getItem('n_dbid')||'';
-    if(t) document.getElementById('n-token').value=t;
     if(d) document.getElementById('n-dbid').value=d;
     updateNotionStatus();
   }
