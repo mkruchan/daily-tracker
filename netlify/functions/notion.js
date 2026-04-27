@@ -26,7 +26,7 @@ exports.handler = async (event) => {
     }
 
     const properties = {
-      "Name": { "title": [{ "text": { "content": date } }] },
+      "Mood": { "title": [{ "text": { "content": mood || '—' } }] },
       "Date": { "date": { "start": date } },
       "Score": { "number": score },
       "Sleep": { "number": metrics.sleep },
@@ -35,7 +35,6 @@ exports.handler = async (event) => {
       "Focus": { "number": metrics.focus },
       "Learning": { "number": metrics.learning },
       "Procrastination": { "number": metrics.procrastination },
-      "Mood": { "rich_text": [{ "text": { "content": mood || '' } }] },
       "Note": { "rich_text": [{ "text": { "content": note || '' } }] }
     };
 
