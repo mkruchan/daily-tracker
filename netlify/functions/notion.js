@@ -15,7 +15,7 @@ exports.handler = async (event) => {
 
   try {
     const body = JSON.parse(event.body);
-    const { dbid, date, score, metrics, mood, note } = body;
+    const { dbid, date, score, metrics, mood, note, test } = body;
 
     if (!dbid) {
       return {
@@ -25,17 +25,54 @@ exports.handler = async (event) => {
       };
     }
 
+    // Grade system
+    function getGrade(s) {
+      if (s >= 9.5) return { emoji: '⚡', label: 'Perfect' };
+      if (s >= 8.5) return { emoji: '🔥', label: 'Excellent' };
+      if (s >= 7.0) return { emoji: '💪', label: 'Good' };
+      if (s >= 6.0) return { emoji: '🙂', label: 'Decent' };
+      if (s >= 5.0) return { emoji: '😐', label: 'Average' };
+      if (s >= 3.0) return { emoji: '😞', label: 'Weak' };
+      return { emoji: '💀', label: 'Total Procrastination' };
+    }
+
+    // Format date for title: "Sat May 16"
+    function formatDateShort(str) {
+      try {
+        const d = new Date(str + 'T12:00:00');
+        return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+      } catch (e) {
+        return str;
+      }
+    }
+
+    const grade = getGrade(score);
+    const dateLabel = formatDateShort(date);
+    // Title: "🔥 Excellent — 8.7 · Sat May 16"
+    const pageTitle = test
+      ? '🧪 Test entry'
+      : `${grade.emoji} ${grade.label} — ${Number(score).toFixed(1)} · ${dateLabel}`;
+
     const properties = {
-      "Mood": { "title": [{ "text": { "content": mood || '—' } }] },
-      "Date": { "date": { "start": date } },
-      "Score": { "number": score },
-      "Sleep": { "number": metrics.sleep },
-      "Nutrition": { "number": metrics.nutrition },
-      "Activity": { "number": metrics.activity },
-      "Focus": { "number": metrics.focus },
-      "Learning": { "number": metrics.learning },
-      "Procrastination": { "number": metrics.procrastination },
-      "Note": { "rich_text": [{ "text": { "content": note || '' } }] }
+      "Name": {
+        "title": [{ "text": { "content": pageTitle } }]
+      },
+      "Date": {
+        "date": { "start": test ? new Date().toISOString().split('T')[0] : date }
+      },
+      "Score": { "number": test ? 0 : score },
+      "Sleep": { "number": test ? 0 : metrics.sleep },
+      "Nutrition": { "number": test ? 0 : metrics.nutrition },
+      "Activity": { "number": test ? 0 : metrics.activity },
+      "Focus": { "number": test ? 0 : metrics.focus },
+      "Learning": { "number": test ? 0 : metrics.learning },
+      "Procrastination": { "number": test ? 0 : metrics.procrastination },
+      "Mood": {
+        "rich_text": [{ "text": { "content": mood || '' } }]
+      },
+      "Note": {
+        "rich_text": [{ "text": { "content": note || '' } }]
+      }
     };
 
     const response = await fetch('https://api.notion.com/v1/pages', {
@@ -57,7 +94,7 @@ exports.handler = async (event) => {
       return {
         statusCode: response.status,
         headers: { 'Access-Control-Allow-Origin': '*' },
-        body: JSON.stringify({ error: data.message || 'Notion error' })
+        body: JSON.stringify({ error: data.message || 'Notion API error' })
       };
     }
 
@@ -66,6 +103,7 @@ exports.handler = async (event) => {
       headers: { 'Access-Control-Allow-Origin': '*' },
       body: JSON.stringify({ success: true })
     };
+
   } catch (err) {
     return {
       statusCode: 500,
