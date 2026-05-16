@@ -54,7 +54,7 @@ exports.handler = async (event) => {
       : `${grade.emoji} ${grade.label} — ${Number(score).toFixed(1)} · ${dateLabel}`;
 
     const properties = {
-      "Name": {
+      "Mood": {
         "title": [{ "text": { "content": pageTitle } }]
       },
       "Date": {
@@ -67,9 +67,6 @@ exports.handler = async (event) => {
       "Focus": { "number": test ? 0 : metrics.focus },
       "Learning": { "number": test ? 0 : metrics.learning },
       "Procrastination": { "number": test ? 0 : metrics.procrastination },
-      "Mood": {
-        "rich_text": [{ "text": { "content": mood || '' } }]
-      },
       "Note": {
         "rich_text": [{ "text": { "content": note || '' } }]
       }
